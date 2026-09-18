@@ -1,0 +1,82 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+ 
+
+typedef struct NODE {
+    int data;
+    struct NODE *next;
+} NODE, *N;
+
+typedef struct  { 
+    N top;
+    int len;
+} STACK,*ST;
+ 
+ST stack_init(){
+
+    ST stack = calloc(1, sizeof(STACK));
+    if(stack == NULL ){
+        printf("stack失败");
+        return NULL;
+    }else{ 
+        stack->top =NULL;     //指向下一个位置
+        return stack;
+    }
+}
+
+bool is_empty(ST stack){
+if (stack == NULL) {
+    return true;
+}
+    return stack->len == 0; 
+}
+
+  
+void add_stack(ST stack, int data){
+    N newnode = calloc(1, sizeof(NODE));
+
+    if (newnode == NULL) {
+        printf("失败");
+        return;
+    }
+
+    newnode->data = data;
+    newnode->next = stack->top;
+    stack->top = newnode;
+    stack->len++;
+}
+
+int delete_stack(ST stack){
+    N tempNODE = stack->top;
+
+    stack->top = tempNODE->next;
+
+    int data = tempNODE->data ;
+
+    free(tempNODE);
+
+    stack->len--;
+    return data;
+}
+
+ 
+//---------------------------------------------
+
+
+void stack_push(ST stack , int data){
+  if (stack != NULL) {
+        add_stack(stack, data);
+    }
+}
+
+bool stack_pop(ST stack, int *data){
+    if (is_empty(stack) || data == NULL) {
+        printf("空栈");
+        return false;
+    }
+
+    *data = delete_stack(stack);
+    return true;
+}

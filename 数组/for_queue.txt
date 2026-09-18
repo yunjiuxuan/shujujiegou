@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+
+#define QUEUE_MAX 100
+
+typedef struct  {
+    int data[QUEUE_MAX];
+    int front;
+    int after;
+    int len;
+} QUEUE,*Q  ;
+
+
+Q queue_init(){
+
+    Q queue = calloc(1, sizeof(QUEUE));
+    if(queue == NULL ){
+        printf("queue失败");
+        return NULL;
+    }else{ 
+        queue->front =0;     
+        queue->after =0;
+        queue->len = 0  ;     
+        return queue;
+    }
+}
+
+bool is_empty(Q queue){
+    return queue->len ==0 ;
+}
+
+bool is_full(Q queue){
+    return queue->len == QUEUE_MAX;
+}
+
+void add_queue(Q queue ,int data){
+    queue->data[ queue-> after] = data;
+
+    if (queue-> after == QUEUE_MAX-1 ) {
+        queue-> after = 0; 
+    }else{
+        queue-> after++;
+    }
+    queue->len++;
+
+}
+
+int* delete_queue(Q queue){
+    int data = queue->data[ queue->front] ;
+    if( queue->front == 0  ){
+        queue->front = QUEUE_MAX-1; 
+    }else{ 
+        queue->front++; 
+    } 
+    queue->len--;
+    return &data;
+
+
+}
+
+ 
+//---------------------------------------------
+
+
+void queue_push(Q queue , int data){
+
+    if( is_full(queue) ){ 
+        printf(" 满队 ");
+    }else{
+        add_queue(queue,data);
+    }
+}
+
+bool queue_pop(Q queue , int* data){
+    if(is_empty(queue)){
+        printf("空队"); 
+        return false;
+    }else{
+        data = delete_queue(queue);
+        return  true;
+    }
+}

@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+
+#define STACK_MAX 100
+
+typedef struct  {
+    int data[STACK_MAX];
+    int top;
+} STACK,*ST  ;
+
+
+ST stack_init(){
+
+    ST stack = malloc( sizeof(STACK));
+    if(stack == NULL ){
+        printf("stack失败");
+        return NULL;
+    }else{
+        memset(stack->data, 0, sizeof(stack->data));
+        stack->top =0;     //指向下一个位置
+        return stack;
+    }
+}
+
+bool is_empty(ST stack){
+    return stack->top == 0; 
+}
+
+bool is_full(ST stack){
+    return stack->top ==STACK_MAX;
+}
+
+void add_stack(ST stack ,int data){
+   stack->data[stack->top++] = data;
+}
+
+int delete_stack(ST stack){
+    return stack->data[--stack->top];
+}
+
+ 
+//---------------------------------------------
+
+
+void stack_push(ST stack , int data){
+
+    if( is_full(stack) ){
+
+        printf(" 满栈 ");
+    }else{
+        add_stack(stack,data);
+    }
+}
+
+bool stack_pop(ST stack , int* data){
+    if(is_empty(stack)){
+        printf("空栈");
+        return false;
+    }else{
+        *data = delete_stack(stack);
+        return  true;
+    }
+}
